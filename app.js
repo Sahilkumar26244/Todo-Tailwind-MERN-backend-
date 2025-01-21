@@ -3,7 +3,8 @@ const express = require('express');
 const connectDB = require('./conn')
 require('dotenv').config()
 const cors = require('cors');
-const userRoutes = require("./routes/user.js")
+const userRoutes = require("./routes/user.js");
+const taskRoutes = require("./routes/task.js")
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get("/", (req,res) => {
 })
 
 app.use("/user" , userRoutes)
+app.use("/task",taskRoutes)
 
 
 

@@ -81,11 +81,66 @@ const updateCompleteTask = async (req, res) => {
   }
 };
 
+const getImportantTasks = async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const Data = await User.findById(id).populate({
+      path: "tasks",
+      match: { important: true },
+      options: { sort: { createdAt: -1 } },
+    });
+
+    const ImpTaskData = Data.tasks;
+    res.status(200).json({ data: ImpTaskData });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Internal server error!" });
+  }
+};
+
+const getCompleteTasks = async (req, res) => {
+    try {
+      const { id } = req.headers;
+      const Data = await User.findById(id).populate({
+        path: "tasks",
+        match: { complete: true },
+        options: { sort: { createdAt: -1 } },
+      });
+  
+      const CompleteTaskData = Data.tasks;
+      res.status(200).json({ data: CompleteTaskData });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "Internal server error!" });
+    }
+  };
+
+
+  const getInCompleteTasks = async (req, res) => {
+    try {
+      const { id } = req.headers;
+      const Data = await User.findById(id).populate({
+        path: "tasks",
+        match: { complete: false },
+        options: { sort: { createdAt: -1 } },
+      });
+  
+      const CompleteTaskData = Data.tasks;
+      res.status(200).json({ data: CompleteTaskData });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "Internal server error!" });
+    }
+  };
+
 module.exports = {
   createTask,
   getTasks,
   deleteTask,
   updateTasks,
   updateImportantTask,
-  updateCompleteTask
+  updateCompleteTask,
+  getImportantTasks,
+  getCompleteTasks,
+  getInCompleteTasks
 };

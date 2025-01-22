@@ -35,8 +35,46 @@ const deleteTask = async (req, res) => {
     const { id } = req.params;
     const userId = req.headers.id;
     await Task.findByIdAndDelete(id);
-    await User.findByIdAndUpdate(userId, { $pull: {tasks:id} });
+    await User.findByIdAndUpdate(userId, { $pull: { tasks: id } });
     res.status(200).json({ message: "Task deleted!" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Internal server error!" });
+  }
+};
+
+const updateTasks = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, desc } = req.body;
+    await Task.findByIdAndUpdate(id, { title: title, desc: desc });
+    res.status(200).json({ message: "Task Updated!" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Internal server error!" });
+  }
+};
+
+const updateImportantTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const TaskData = await Task.findById(id);
+    const ImpTask = TaskData.important;
+    await Task.findByIdAndUpdate(id, { important: !ImpTask });
+    res.status(200).json({ message: "Task Updated!" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Internal server error!" });
+  }
+};
+
+const updateCompleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const TaskData = await Task.findById(id);
+    const CompleteTask = TaskData.complete;
+    await Task.findByIdAndUpdate(id, { complete: !CompleteTask });
+    res.status(200).json({ message: "Task Updated!" });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Internal server error!" });
@@ -47,4 +85,7 @@ module.exports = {
   createTask,
   getTasks,
   deleteTask,
+  updateTasks,
+  updateImportantTask,
+  updateCompleteTask
 };

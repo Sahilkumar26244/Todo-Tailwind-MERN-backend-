@@ -10,7 +10,7 @@ const userRegister = async (req, res) => {
     const existingEmail = await User.findOne({ email: email });
 
     if (existingUser) {
-      return res.status(300).json({ message: "Username already exista" });
+      return res.status(300).json({ message: "Username already exist!" });
     } else if (username.length < 4) {
       return res
         .status(400)
@@ -49,7 +49,7 @@ const userLogin = async (req, res) => {
     if (data) {
       const authClaims = [{ name: username }, { jti: jwt.sign({}, "tsmTM") }];
       const token = jwt.sign({ authClaims }, "tcmTM", { expiresIn: "2d" });
-      res.status(200).json({id:existingUser._id,token})
+      res.status(200).json({id:existingUser._id,token,message:"User Login Successfully!"})
     } else {
       return res.status(300).json({ message: "Invalid credentials!" });
     }

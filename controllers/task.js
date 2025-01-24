@@ -61,7 +61,7 @@ const updateImportantTask = async (req, res) => {
     const TaskData = await Task.findById(id);
     const ImpTask = TaskData.important;
     await Task.findByIdAndUpdate(id, { important: !ImpTask });
-    res.status(200).json({ message: "Task Updated!" });
+    res.status(200).json({ message: "Now your task is in Important!",task:ImpTask });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Internal server error!" });
@@ -74,7 +74,7 @@ const updateCompleteTask = async (req, res) => {
     const TaskData = await Task.findById(id);
     const CompleteTask = TaskData.complete;
     await Task.findByIdAndUpdate(id, { complete: !CompleteTask });
-    res.status(200).json({ message: "Task Updated!" });
+    res.status(200).json({ message: "Task Updated!",complete:CompleteTask });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Internal server error!" });
